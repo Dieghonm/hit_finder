@@ -1,49 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import Papa from 'papaparse';
-import karaokeList from './karaoke_lists/Bar Nevada.csv';
+import React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import Body from './components/Body';
+import './App.css';
 
-function App() {
-  const [csvData, setCsvData] = useState([]);
-
-  useEffect(() => {
-    fetch(karaokeList)
-      .then((response) => response.text())
-      .then((csv) => {
-        Papa.parse(csv, {
-          header: true,
-          skipEmptyLines: true,
-          dynamicTyping: true,
-          complete: (result) => setCsvData(result.data),
-        });
-      })
-      .catch((err) => console.error('Erro ao carregar CSV:', err));
-  }, []);
-
+const App = () => {
   return (
-    <div className="App">
-      <h1>Lista de Karaokê</h1>
-      <table border="1">
-        <thead>
-          <tr>
-            {csvData.length > 0 && Object.keys(csvData[0]).map((header) => (
-              <th key={header}>{header}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {csvData.map((row, index) => (
-            <tr key={index}>
-              {Object.values(row).map((value, i) => (
-                <td key={i}>{value}</td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <Router>
+      <div>
+        <Header />
+        <Body />
+        <Footer />
+      </div>
+    </Router>
   );
-}
+};
 
 export default App;
+
 
 

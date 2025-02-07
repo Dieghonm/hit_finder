@@ -1,0 +1,52 @@
+/* Estilização do Header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* background-color: #f8f9fa; */
+  padding: 1rem;
+  /* border-bottom: 1px solid #ddd; */
+}
+
+.app-logo {
+  height: 50px;
+  /* border-radius: 50%; */
+}
+
+.bar-name {
+  font-size: 1.5rem;
+  color: #CCCCCC;
+}
+
+.menu-wrapper {
+  position: relative;
+}
+
+.menu-icon {
+  cursor: pointer;
+  font-size: 2rem;
+  color: #333;
+}
+
+.menu-dropdown {
+  position: absolute;
+  right: 0;
+  top: 2rem;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+}
+
+.menu-item {
+  display: block;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+}
+
+.menu-item:hover {
+  background-color: #f1f1f1;
+}

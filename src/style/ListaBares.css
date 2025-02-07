@@ -1,0 +1,39 @@
+/* Estiliza o container principal */
+.lista-bares {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 1rem;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Título principal */
+.titulo {
+  text-align: center;
+  font-size: 2rem;
+  color: #CCCCCC;
+  margin-bottom: 1rem;
+}
+
+/* Container de cada bar */
+.bar-container {
+  padding: 0.75rem;
+  border-radius: 10px;
+  margin: 0.5rem 0;
+  border: 3px solid transparent; /* A borda é inicialmente transparente */
+  border-image: linear-gradient(to right, #31e895, #1373ed) 1; /* Aplica o gradiente na borda */
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+/* Links para os bares */
+.bar-link {
+  text-decoration: none;
+  color: #CCCCCC;
+  font-weight: bold;
+}
+
+.bar-link:hover {
+  text-decoration: underline;
+  color: #CCCCCC;
+}
