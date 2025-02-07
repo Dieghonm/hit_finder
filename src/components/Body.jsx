@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Routes, Route } from 'react-router-dom';
 import MusicList from './Body/MusicList';
 import ListaBares from "./Body/ListaBares";
+import Favoritos from "./Body/Favoritos";
+import BarCard from "./Body/BarCard";
 
 const Body = ({ barData }) => {
   const [escolhido, setEscolhido] = useState({});
@@ -11,7 +13,9 @@ const Body = ({ barData }) => {
     <main className="flex-1 p-4">
       <Routes>
         <Route path="/" element={<ListaBares func={setEscolhido} />} />
-        <Route path="/hitFinder" element={<ListaBares func={setEscolhido} />} />
+        <Route path="/hit_finder" element={<ListaBares func={setEscolhido} />} />
+        <Route path="/favoritos" element={<Favoritos data={escolhido} />} />
+        <Route path="/detalhes" element={<BarCard data={escolhido} />} />
         <Route path="/musicas/:id" element={<MusicList karaoke={escolhido.karaoke} />} />
       </Routes>
     </main>

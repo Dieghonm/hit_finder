@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 
 const BarCard = ({data}) => {
-  let { nome, Telefone, endereco, logo, karaoke} = data;
+  let { nome, Telefone, endereco, logo} = data;
+
+  console.log( nome, Telefone, endereco, logo);
+  
 
   return (
     <div>
