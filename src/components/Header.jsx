@@ -5,10 +5,9 @@ import sanduiche from '../assets/icon sanduiche.png';
 import baresData from '../assets/bares.json';
 import '../style/Header.css';
 
-const Header = () => {
+const Header = ({props, setEscolhido,  escolhido}) => {
   const location = useLocation();
   const [BarId, setBarId] = useState('');
-  const [barData, setBarData] = useState({ nome: '' });
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -20,16 +19,16 @@ const Header = () => {
   useEffect(() => {
     const bar = baresData.find((bar) => bar.id === BarId);
     if (bar) {
-      setBarData(bar);
+      setEscolhido(bar)
     } else {
-      setBarData({ nome: '' });
+      setEscolhido({id: 0, nome: ''});
     }
   }, [BarId]);
 
   return (
     <header className="header">
       <img src={logo} className="app-logo" alt="logo" />
-      <p className="bar-name">{barData.nome || 'Selecione um bar'}</p>
+      <p className="bar-name">{escolhido.nome || 'Selecione um bar'}</p>
       <div className="menu-wrapper">
         <img
           src={sanduiche}
@@ -39,7 +38,7 @@ const Header = () => {
         />
         {menuOpen && (
           <div className="menu-dropdown">
-            <Link to="/" className="menu-item" onClick={() => setMenuOpen(false)}>Bares</Link>
+            {props !== 'QRCODE' && (<Link to="/" className="menu-item" onClick={() => setMenuOpen(false)}>Bares</Link>)}
             <Link to="/favoritos" className="menu-item" onClick={() => setMenuOpen(false)}>Favoritos</Link>
             <Link to="/detalhes" className="menu-item" onClick={() => setMenuOpen(false)}>Detalhes</Link>
             <Link to={`/musicas/${BarId}`} className="menu-item" onClick={() => setMenuOpen(false)}>Karaoke</Link>

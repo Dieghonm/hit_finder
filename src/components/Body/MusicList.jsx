@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import Papa from 'papaparse';
+import cantor from '../../assets/cantor.png';
+import musica from '../../assets/musica.png';
 import karaokeList from '../../karaoke_lists/Bar Nevada.csv';
+import '../../style/MusicList.css';
 
-function MusicList() {
+function MusicList({ escolhido }) {
   const [csvData, setCsvData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredData, setFilteredData] = useState([]);
@@ -10,21 +13,23 @@ function MusicList() {
   const [rowsPerPage] = useState(20);
 
   useEffect(() => {
-    fetch(karaokeList)
-      .then((response) => response.text())
-      .then((csv) => {
-        Papa.parse(csv, {
-          header: true,
-          skipEmptyLines: true,
-          dynamicTyping: true,
-          complete: (result) => {
-            setCsvData(result.data);
-            setFilteredData(result.data); // Inicializa com todos os dados
-          },
-        });
-      })
-      .catch((err) => console.error('Erro ao carregar CSV:', err));
-  }, []);
+    if (escolhido.karaoke === 'Bar Nevada.csv') {
+      fetch(karaokeList)
+        .then((response) => response.text())
+        .then((csv) => {
+          Papa.parse(csv, {
+            header: true,
+            skipEmptyLines: true,
+            dynamicTyping: true,
+            complete: (result) => {
+              setCsvData(result.data);
+              setFilteredData(result.data);
+            },
+          });
+        })
+        .catch((err) => console.error('Erro ao carregar CSV:', err));
+    }
+  }, [escolhido]);
 
   const handleSearch = (e) => {
     const term = e.target.value.toLowerCase();
@@ -35,92 +40,56 @@ function MusicList() {
       );
     });
     setFilteredData(filtered);
-    setCurrentPage(1); // Resetar para a primeira página ao buscar
+    setCurrentPage(1);
   };
 
   const totalPages = Math.ceil(filteredData.length / rowsPerPage);
-
-  const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
-  const handlePrevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
-  const handleNextThreePages = () => {
-    if (currentPage + 3 <= totalPages) {
-      setCurrentPage(currentPage + 3);
-    } else {
-      setCurrentPage(totalPages); // Caso haja menos de 3 páginas à frente
-    }
-  };
-
-  const handlePrevThreePages = () => {
-    if (currentPage - 3 >= 1) {
-      setCurrentPage(currentPage - 3);
-    } else {
-      setCurrentPage(1); // Caso haja menos de 3 páginas atrás
-    }
-  };
-
-  // Exibe apenas as linhas da página atual
   const displayedData = filteredData.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
 
   return (
-    <div className="App">
-      <h1>Lista de Karaokê</h1>
+    <div className="app-container">
       <input
         type="text"
         value={searchTerm}
         onChange={handleSearch}
+        className="search-input"
         placeholder="Buscar..."
       />
-      <table border="1">
-        <thead>
-          <tr>
-            {csvData.length > 0 && Object.keys(csvData[0]).map((header) => (
-              <th key={header}>{header}</th>
-            ))}
-          </tr>
-        </thead>
+      <table className="music-table">
         <tbody>
           {displayedData.map((row, index) => (
-            <tr key={index}>
-              {Object.values(row).map((value, i) => (
-                <td key={i}>{value}</td>
-              ))}
+            <tr key={index} className="music-row">
+              <td colSpan={3} className="music-card-wrapper">
+                <div className="music-card">
+                  <img src={cantor} className="cantor-icon" alt="cantor_icon" />
+                  <span className = 'cantor-span'>{row["CANTOR"]}</span>
+                |
+                  <img src={musica} className="musica-icon" alt="musica_icon" />
+                  <span>{row["TÍTULO"]}</span>
+                </div>
+                <td className="inicio-cell">{row["INÍCIO DA LETRA"]}</td>
+                <td className="codigo-cell">{row["CÓD"]}</td>
+              </td>
             </tr>
           ))}
         </tbody>
+
       </table>
-      
-      <div className="pagination">
-        <button onClick={handlePrevThreePages} disabled={currentPage <= 3}>
-          -3 Páginas
-        </button>
-        <button onClick={handlePrevPage} disabled={currentPage === 1}>
-          Anterior
-        </button>
-        <span>
-          Página {currentPage} de {totalPages}
-        </span>
-        <button onClick={handleNextPage} disabled={currentPage === totalPages}>
-          Próxima
-        </button>
-        <button onClick={handleNextThreePages} disabled={currentPage + 3 > totalPages}>
-          +3 Páginas
-        </button>
+      <div className="pagination-container">
+        {currentPage !== 1 && (<button onClick={() => setCurrentPage(1)}>1</button>)}
+        {currentPage > 3 && (<button onClick={() => setCurrentPage(currentPage - 2)}>{currentPage - 2}</button>)}
+        {currentPage > 2 && (<button onClick={() => setCurrentPage(currentPage - 1)}>{currentPage - 1}</button>)}
+        <span className="current-page">{currentPage}</span>
+        {currentPage < totalPages - 1 && (<button onClick={() => setCurrentPage(currentPage + 1)}>{currentPage + 1}</button>)}
+        {currentPage < totalPages - 2 && (<button onClick={() => setCurrentPage(currentPage + 2)}>{currentPage + 2}</button>)}
+        {currentPage !== totalPages && (<button onClick={() => setCurrentPage(totalPages)}>{totalPages}</button>)}
       </div>
     </div>
   );
 }
 
 export default MusicList;
+
 
 
 

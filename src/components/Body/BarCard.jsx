@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
-const BarCard = ({data}) => {
-  let { nome, Telefone, endereco, logo} = data;
+const BarCard = ({escolhido}) => {
+  let { nome, Telefone, endereco, logo} = escolhido;
 
   console.log( nome, Telefone, endereco, logo);
   
@@ -13,7 +13,7 @@ const BarCard = ({data}) => {
       <p>Endereço: {endereco}</p>
       <p>Telefone: {Telefone}</p>
       <ul>
-            {Object.entries(data["Horário de funcionamento"]).map(([dia, horario]) => (
+            {Object.entries(escolhido["Horário de funcionamento"]).map(([dia, horario]) => (
               <li key={dia}>
                 {dia}: {horario}
               </li>

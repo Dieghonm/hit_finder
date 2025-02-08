@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Favoritos = () => {
+const Favoritos = ({escolhido}) => {
   return <h1>Favoritos</h1>;
 };
 

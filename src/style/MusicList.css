@@ -1,0 +1,114 @@
+.app-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: Arial, sans-serif;
+}
+
+.search-input {
+  padding: 8px 12px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 300px;
+}
+
+.music-table {
+  width: 100%;
+  max-width: 430px;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 12px;
+}
+
+.music-row {
+  display: block;
+  /* border: 1px solid #ddd; */
+  padding: 10px 6px;
+  position: relative;
+  margin: 10px 40px;
+}
+
+.music-card-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.music-card {
+  display: flex;
+  align-items: center;
+  /* gap: 10px;  */
+}
+
+.cantor-icon {
+  width: 13.62px;
+  height: 15.66px;
+  vertical-align: middle;
+  margin: 0px 8px;
+}
+
+.cantor-span {
+ min-width: 130px;
+ max-width: 131px;
+}
+
+.musica-icon {
+  width: 11.35px;
+  height: 18.14px;
+  vertical-align: middle;
+  margin: 0px 8px;
+}
+
+.inicio-cell {
+  margin-top: 3px;
+  font-size: 12px;
+  white-space: nowrap;
+  border-top: 1px solid #ddd;
+  padding-top: 5px;
+}
+
+.codigo-cell {
+  position: absolute;
+  top: 51%;
+  right: 0px;
+  /* transform: translateY(-50%); */
+  font-size: 12px;
+  text-align: right;
+  white-space: nowrap;
+  border: 1px solid #ddd;
+  width: 84px;
+  text-align: center;
+  font-size: 16px;
+  height: 27px;
+}
+
+
+
+/* _________________________paginas________________ */
+.pagination-container {
+  display: flex;
+  gap: 5px;
+  margin-top: 20px;
+}
+
+.pagination-container button {
+  padding: 6px 12px;
+  border: 1px solid #007bff;
+  background-color: white;
+  color: #007bff;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.pagination-container button:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+.current-page {
+  font-weight: bold;
+  padding: 6px 12px;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+}
