@@ -1,21 +1,26 @@
-/* Estilização do Header */
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  /* background-color: #f8f9fa; */
-  padding: 1rem;
-  /* border-bottom: 1px solid #ddd; */
+  max-width: 345px;
+  margin: 0 auto;
+  padding: 20px 0px 40px;
+
 }
 
 .app-logo {
   height: 50px;
-  /* border-radius: 50%; */
+  margin-right: 10px;
+}
+
+.bar-nam-div{
+  text-align: center;  
 }
 
 .bar-name {
   font-size: 1.5rem;
   color: #CCCCCC;
+  align-items: center;
 }
 
 .menu-wrapper {

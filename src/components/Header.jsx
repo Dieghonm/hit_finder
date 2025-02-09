@@ -28,7 +28,11 @@ const Header = ({props, setEscolhido,  escolhido}) => {
   return (
     <header className="header">
       <img src={logo} className="app-logo" alt="logo" />
-      <p className="bar-name">{escolhido.nome || 'Selecione um bar'}</p>
+      <div className="bar-nam-div">
+        <p className="bar-name">{escolhido.nome || 'Selecione um bar'}</p>
+        <p className="bar-name">{escolhido.apelido || ''}</p>
+      </div>
+
       <div className="menu-wrapper">
         <img
           src={sanduiche}

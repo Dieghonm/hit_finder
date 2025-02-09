@@ -6,18 +6,17 @@ import '../../style/ListaBares.css';
 const ListaBares = ({ setOrigin }) => {
   return (
     <div className="lista-bares">
-      <h1 className="titulo">Lista de Bares</h1>
       {baresData.map((bar) => (
-        <div className="bar-container" key={bar.id}>
+        <div  key={bar.id}>
           <Link
             className="bar-link"
             onClick={() => {
-              // func(bar);
               setOrigin('List');
             }}
             to={`/musicas/${bar.id}`}
           >
-            {bar.nome}
+            <p className="bar-container">{bar.nome}</p>
+            
           </Link>
         </div>
       ))}

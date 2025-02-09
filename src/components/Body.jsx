@@ -4,10 +4,11 @@ import MusicList from './Body/MusicList';
 import ListaBares from "./Body/ListaBares";
 import Favoritos from "./Body/Favoritos";
 import BarCard from "./Body/BarCard";
+import '../style/Body.css'
 
 const Body = ({ setOrigin, escolhido }) => {
   return (
-    <main className="flex-1 p-4">
+    <main className="Body-main">
       <Routes>
         <Route path="/" element={<ListaBares  setOrigin={setOrigin} />} />
         <Route path="/hit_finder" element={<ListaBares  setOrigin={setOrigin}/>} />
