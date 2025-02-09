@@ -1,0 +1,45 @@
+.bar-card {
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 20px auto;
+}
+
+.bar-card h2 {
+  /* font-size: 24px; */
+  font-weight: bold;
+  margin-bottom: 10px;
+  /* color: #333; */
+}
+
+.bar-card p {
+  /* font-size: 16px; */
+  margin: 8px 0;
+  /* color: #555; */
+}
+
+.bar-card ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.bar-card li {
+  /* font-size: 14px; */
+  margin: 5px 0;
+  /* color: #444; */
+}
+
+.bar-card .address,
+.bar-card .phone {
+  margin: 10px 0;
+}
+
+.bar-card .address span,
+.bar-card .phone span {
+  font-weight: bold;
+}
+
+.bar-card .hours {
+  margin-top: 15px;
+}

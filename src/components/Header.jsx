@@ -44,8 +44,8 @@ const Header = ({props, setEscolhido,  escolhido}) => {
           <div className="menu-dropdown">
             {props !== 'QRCODE' && (<Link to="/" className="menu-item" onClick={() => setMenuOpen(false)}>Bares</Link>)}
             <Link to="/favoritos" className="menu-item" onClick={() => setMenuOpen(false)}>Favoritos</Link>
-            <Link to="/detalhes" className="menu-item" onClick={() => setMenuOpen(false)}>Detalhes</Link>
-            <Link to={`/musicas/${BarId}`} className="menu-item" onClick={() => setMenuOpen(false)}>Karaoke</Link>
+            {escolhido.id !== 0 && <Link to={`/detalhes/${BarId}`} className="menu-item" onClick={() => setMenuOpen(false)}>Detalhes</Link>}
+            {escolhido.id !== 0 && <Link to={`/musicas/${BarId}`} className="menu-item" onClick={() => setMenuOpen(false)}>Karaoke</Link>}
           </div>
         )}
       </div>

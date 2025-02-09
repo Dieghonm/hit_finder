@@ -13,7 +13,7 @@ const Body = ({ setOrigin, escolhido }) => {
         <Route path="/" element={<ListaBares  setOrigin={setOrigin} />} />
         <Route path="/hit_finder" element={<ListaBares  setOrigin={setOrigin}/>} />
         <Route path="/favoritos" element={<Favoritos escolhido={escolhido} />} />
-        <Route path="/detalhes" element={<BarCard escolhido={escolhido} />} />
+        <Route path="/detalhes/:id" element={<BarCard escolhido={escolhido} />} />
         <Route path="/musicas/:id" element={<MusicList escolhido={escolhido}/>} />
       </Routes>
     </main>

@@ -68,8 +68,8 @@ function MusicList({ escolhido }) {
                   <span>{row["TÍTULO"]}</span>
                 </div>
                 <div className="cod-card">
-                  <td className="inicio-cell">{row["INÍCIO DA LETRA"]}</td>
-                  <td className="codigo-cell">{row["CÓD"]}</td>
+                  <p className="inicio-cell">{row["INÍCIO DA LETRA"]}</p>
+                  <p className="codigo-cell">{row["CÓD"]}</p>
                 </div>
               </td>
             </tr>
