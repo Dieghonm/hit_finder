@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import Papa from 'papaparse';
 import cantor from '../../assets/cantor.png';
 import musica from '../../assets/musica.png';
@@ -7,46 +8,46 @@ import syncro from '../../karaoke_lists/syncro_2023.csv';
 import '../../style/MusicList.css';
 
 function MusicList({ escolhido }) {
+  const { id } = useParams();
   const [csvData, setCsvData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredData, setFilteredData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage] = useState(20);
 
+  const karaokeMap = {
+    'bar_nevada': { nome: 'Bar Nevada', arquivo: Nevada },
+    'syncro_2023': { nome: 'Syncro 2023', arquivo: syncro },
+  };
+
   useEffect(() => {
-    if (escolhido.karaoke === 'Bar Nevada.csv') {
-      fetch(Nevada)
-        .then((response) => response.text())
-        .then((csv) => {
-          Papa.parse(csv, {
-            header: true,
-            skipEmptyLines: true,
-            dynamicTyping: true,
-            complete: (result) => {
-              setCsvData(result.data);
-              setFilteredData(result.data);
-            },
-          });
-        })
-        .catch((err) => console.error('Erro ao carregar CSV:', err));
+    let karaokeFile = null;
+
+    if (escolhido && escolhido.karaoke) {
+      if (escolhido.karaoke === 'Bar Nevada.csv') karaokeFile = Nevada;
+      if (escolhido.karaoke === 'syncro_2023.csv') karaokeFile = syncro;
+    } else {
+      if (id === 'syncro_2023') karaokeFile = syncro;
+      if (id === 'bar_nevada') karaokeFile = Nevada;
     }
-    if (escolhido.karaoke === 'syncro_2023.csv') {
-      fetch(syncro)
-        .then((response) => response.text())
-        .then((csv) => {
-          Papa.parse(csv, {
-            header: true,
-            skipEmptyLines: true,
-            dynamicTyping: true,
-            complete: (result) => {
-              setCsvData(result.data);
-              setFilteredData(result.data);
-            },
-          });
-        })
-        .catch((err) => console.error('Erro ao carregar CSV:', err));
-    }
-  }, [escolhido]);
+
+    if (!karaokeFile) return;
+
+    fetch(karaokeFile)
+      .then((response) => response.text())
+      .then((csv) => {
+        Papa.parse(csv, {
+          header: true,
+          skipEmptyLines: true,
+          dynamicTyping: true,
+          complete: (result) => {
+            setCsvData(result.data);
+            setFilteredData(result.data);
+          },
+        });
+      })
+      .catch((err) => console.error('Erro ao carregar CSV:', err));
+  }, [escolhido, id]);
 
   const handleSearch = (e) => {
     const term = e.target.value.toLowerCase();
@@ -79,8 +80,8 @@ function MusicList({ escolhido }) {
               <td colSpan={3} className="music-card-wrapper">
                 <div className="music-card">
                   <img src={cantor} className="cantor-icon" alt="cantor_icon" />
-                  <span className = 'cantor-span'>{row["CANTOR"]}</span>
-                |
+                  <span className="cantor-span">{row["CANTOR"]}</span>
+                  |
                   <img src={musica} className="musica-icon" alt="musica_icon" />
                   <span>{row["TÍTULO"]}</span>
                 </div>
@@ -92,7 +93,6 @@ function MusicList({ escolhido }) {
             </tr>
           ))}
         </tbody>
-
       </table>
       <div className="pagination-container">
         {currentPage !== 1 && (<button onClick={() => setCurrentPage(1)}>1</button>)}
