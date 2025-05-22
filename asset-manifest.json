@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/hit_finder/static/css/main.b8280574.css",
-    "main.js": "/hit_finder/static/js/main.d88e96dd.js",
+    "main.js": "/hit_finder/static/js/main.fa5b253c.js",
     "static/js/488.3cd2673e.chunk.js": "/hit_finder/static/js/488.3cd2673e.chunk.js",
     "static/media/Bar Nevada.csv": "/hit_finder/static/media/Bar Nevada.7661fe5e9c2f04b8079f.csv",
     "static/media/syncro_2023.csv": "/hit_finder/static/media/syncro_2023.980a55348938f115b37c.csv",
     "index.html": "/hit_finder/index.html",
     "main.b8280574.css.map": "/hit_finder/static/css/main.b8280574.css.map",
-    "main.d88e96dd.js.map": "/hit_finder/static/js/main.d88e96dd.js.map",
+    "main.fa5b253c.js.map": "/hit_finder/static/js/main.fa5b253c.js.map",
     "488.3cd2673e.chunk.js.map": "/hit_finder/static/js/488.3cd2673e.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.b8280574.css",
-    "static/js/main.d88e96dd.js"
+    "static/js/main.fa5b253c.js"
   ]
 }
