@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Papa from 'papaparse';
 import cantor from '../../assets/cantor.png';
 import musica from '../../assets/musica.png';
-import karaokeList from '../../karaoke_lists/Bar Nevada.csv';
+import Nevada from '../../karaoke_lists/Bar Nevada.csv';
+import syncro from '../../karaoke_lists/syncro_2023.csv';
 import '../../style/MusicList.css';
 
 function MusicList({ escolhido }) {
@@ -14,7 +15,23 @@ function MusicList({ escolhido }) {
 
   useEffect(() => {
     if (escolhido.karaoke === 'Bar Nevada.csv') {
-      fetch(karaokeList)
+      fetch(Nevada)
+        .then((response) => response.text())
+        .then((csv) => {
+          Papa.parse(csv, {
+            header: true,
+            skipEmptyLines: true,
+            dynamicTyping: true,
+            complete: (result) => {
+              setCsvData(result.data);
+              setFilteredData(result.data);
+            },
+          });
+        })
+        .catch((err) => console.error('Erro ao carregar CSV:', err));
+    }
+    if (escolhido.karaoke === 'syncro_2023.csv') {
+      fetch(syncro)
         .then((response) => response.text())
         .then((csv) => {
           Papa.parse(csv, {
