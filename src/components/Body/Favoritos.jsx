@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import useLocalStorage from '../../hooks/useLocalStorage';
 import Papa from 'papaparse';
 import cantorIcon from '../../assets/cantor.png';
@@ -9,7 +10,7 @@ import '../../style/ListaBares.css';
 import '../../style/MusicList.css';
 
 const Favoritos = () => {
-  const [favoritos, adicionarFavorito, removerFavorito] = useLocalStorage('karaokeFavoritos', {});
+  const [favoritos,  removerFavorito] = useLocalStorage('karaokeFavoritos', {});
   const [localSelecionado, setLocalSelecionado] = useState('');
   const [csvData, setCsvData] = useState([]);
   const [popupData, setPopupData] = useState(null);
@@ -19,35 +20,37 @@ const Favoritos = () => {
   const baresDisponiveis = Object.keys(favoritos).filter(bar => favoritos[bar].length > 0);
 
   // Carrega os dados do CSV e filtra os favoritos
-useEffect(() => {
-  if (!localSelecionado) return;
+  useEffect(() => {
+    if (!localSelecionado) return;
 
-  let karaokeFile = null;
-  if (localSelecionado === 'syncro_2023') karaokeFile = syncro;
-  if (localSelecionado === 'bar_nevada') karaokeFile = Nevada;
+    let karaokeFile = null;
+    if (localSelecionado === 'syncro_2023') karaokeFile = syncro;
+    if (localSelecionado === 'bar_nevada') karaokeFile = Nevada;
 
-  if (!karaokeFile) return;
+    if (!karaokeFile) return;
 
-  fetch(karaokeFile)
-    .then((response) => response.text())
-    .then((csv) => {
-      Papa.parse(csv, {
-        header: true,
-        skipEmptyLines: true,
-        dynamicTyping: true,
-        complete: (result) => {
-          const favoritosDoLocal = favoritos[localSelecionado] || [];
-          setCsvData(result.data.filter((musica) => 
-            favoritosDoLocal.includes(musica.CÓD)
-          ));
-        },
-        error: (error) => {
-          console.error('Erro ao parsear CSV:', error);
-        }
-      });
-    })
-    .catch((err) => console.error('Erro ao carregar CSV:', err));
-}, [localSelecionado, favoritos]);
+    fetch(karaokeFile)
+      .then((response) => response.text())
+      .then((csv) => {
+        Papa.parse(csv, {
+          header: true,
+          skipEmptyLines: true,
+          dynamicTyping: true,
+          complete: (result) => {
+            const favoritosDoLocal = favoritos[localSelecionado] || [];
+            setCsvData(result.data.filter((musica) => 
+              favoritosDoLocal.includes(musica.CÓD)
+            ));
+          },
+          error: (error) => {
+            console.error('Erro ao parsear CSV:', error);
+          }
+        });
+      })
+      .catch((err) => console.error('Erro ao carregar CSV:', err));
+  }, [localSelecionado, favoritos]);
+
+  const navigate = useNavigate(); 
 
   // Filtra os dados conforme o termo de busca
   useEffect(() => {
@@ -58,11 +61,6 @@ useEffect(() => {
     );
     setFilteredData(filtered);
   }, [searchTerm, csvData]);
-
-  const handleVoltar = () => {
-    setLocalSelecionado('');
-    setSearchTerm('');
-  };
 
   const toggleFavorito = (musica) => {
     removerFavorito({ id: localSelecionado }, { CÓD: musica.CÓD });
@@ -75,10 +73,9 @@ useEffect(() => {
   if (!localSelecionado) {
     return (
       <div className="lista-bares">
-        <h1>Favoritos</h1>
         {baresDisponiveis.length > 0 ? (
           baresDisponiveis.map((bar) => (
-            <button 
+            <div 
               key={bar} 
               className="bar-button"
               onClick={() => setLocalSelecionado(bar)}
@@ -87,9 +84,8 @@ useEffect(() => {
                 <h3>{bar}</h3>
                 <p>{favoritos[bar].length} música(s) favoritada(s)</p>
               </div>
-            </button>
-          ))
-        ) : (
+            </div>
+        ))) : (
           <p className="empty-message">Nenhum favorito encontrado</p>
         )}
       </div>
@@ -106,7 +102,6 @@ useEffect(() => {
         className="search-input"
         placeholder="Buscar nos favoritos..."
       />
-
       <table className="music-table">
         <tbody>
           {filteredData.map((row, index) => (
@@ -128,8 +123,12 @@ useEffect(() => {
           ))}
         </tbody>
       </table>
-          <div className="table-footer">
-      <button onClick={handleVoltar} className="back-button">
+      <div className="table-footer">
+
+      <button
+        className="bar-link"
+        onClick={() => navigate(`/musicas/${localSelecionado}`)}
+      >
         Voltar para lista
       </button>
     </div>
@@ -164,7 +163,6 @@ useEffect(() => {
           </div>
         </div>
       )}
-
       {filteredData.length === 0 && (
         <p className="empty-message">Nenhum favorito encontrado para esta busca</p>
       )}
