@@ -127,10 +127,12 @@ useEffect(() => {
             </tr>
           ))}
         </tbody>
-        <button onClick={handleVoltar} className="back-button">
-          Voltar para lista
-        </button>
       </table>
+          <div className="table-footer">
+      <button onClick={handleVoltar} className="back-button">
+        Voltar para lista
+      </button>
+    </div>
 
       {popupData && (
         <div className="popup-overlay" onClick={() => setPopupData(null)}>
@@ -151,7 +153,7 @@ useEffect(() => {
                 setPopupData(null);
               }}
             >
-              Remover dos Favoritos
+              Remover
             </button>
             <button 
               className="popup-btn btn-close"

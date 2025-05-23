@@ -133,7 +133,7 @@ function MusicList({ escolhido }) {
               <button className="popup-btn" onClick={() => {
                 toggleFavorito(popupData, 'remove');
                 closePopup();
-              }}>Desfavoritar</button>
+              }}>Remover</button>
               : 
               <button className="popup-btn" onClick={() => {
                 toggleFavorito(popupData);
