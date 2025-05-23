@@ -1,4 +1,3 @@
-// src/hooks/useLocalStorage.js
 import { useState, useEffect } from 'react';
 
 const useLocalStorage = (key, initialValue) => {
@@ -12,17 +11,63 @@ const useLocalStorage = (key, initialValue) => {
     }
   });
 
-  const setValue = (value) => {
+const setValue = (local, musica = { 'CÓD': 0 }) => {
+  if (key === 'karaokeFavoritos') {
     try {
-      const valueToStore = value instanceof Function ? value(storedValue) : value;
-      setStoredValue(valueToStore);
-      window.localStorage.setItem(key, JSON.stringify(valueToStore));
+      const stored = JSON.parse(window.localStorage.getItem(key)) || {};
+      const localId = local?.id;
+      const musicaCod = musica?.CÓD;
+
+      if (!localId || !musicaCod) return;
+
+      const existentes = stored[localId] || [];
+      if (!existentes.includes(musicaCod)) {
+        const atualizados = [...existentes, musicaCod];
+        stored[localId] = atualizados;
+        window.localStorage.setItem(key, JSON.stringify(stored));
+        setStoredValue(stored);
+      }
+
     } catch (error) {
-      console.error(`Error setting localStorage key "${key}":`, error);
+      console.error(`Erro ao atualizar localStorage (${key}):`, error);
+    }
+  } else {
+      try {
+        const valueToStore = local instanceof Function ? local(storedValue) : local;
+        setStoredValue(valueToStore);
+        window.localStorage.setItem(key, JSON.stringify(valueToStore));
+      } catch (error) {
+        console.error(`Error setting localStorage key "${key}":`, error);
+      }
     }
   };
 
-  // Atualiza o estado se a chave mudar em outra aba/janela
+const removerFavorito = (local, musica = { 'CÓD': 0 }) => {
+    try {
+      if (key === 'karaokeFavoritos') {
+        const current = JSON.parse(window.localStorage.getItem(key)) || {};
+        const localId = local?.id;
+        const musicaCod = musica?.CÓD;
+
+        if (!localId || !musicaCod) return;
+
+        const list = current[localId] || [];
+        
+        if (list.includes(musicaCod)) {
+          const updated = {
+            ...current,
+            [localId]: list.filter(cod => cod !== musicaCod)
+          };
+
+          window.localStorage.setItem(key, JSON.stringify(updated));
+          setStoredValue(updated);
+        }
+      }
+    } catch (error) {
+      console.error(`Erro ao remover favorito do localStorage (${key}):`, error);
+    }
+  };
+
   useEffect(() => {
     const handleStorageChange = (e) => {
       if (e.key === key) {
@@ -41,7 +86,7 @@ const useLocalStorage = (key, initialValue) => {
     return () => window.removeEventListener('storage', handleStorageChange);
   }, [key, initialValue, storedValue]);
 
-  return [storedValue, setValue];
+  return [storedValue, setValue, removerFavorito];
 };
 
 export default useLocalStorage;

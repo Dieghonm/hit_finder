@@ -89,7 +89,56 @@
   border-image: linear-gradient(to right, #31e895, #1373ed) 1;
 }
 
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
 
+/* _________________________popup________________ */
+
+.popup-card {
+  background-color: #141414;
+  padding: 20px 25px;
+  border-radius: 10px;
+  max-width: 320px;
+  width: 90%;
+  font-size: 14px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  /* border-top: 5px solid; */
+  border:  5px solid;
+  border-image: linear-gradient(to right, #31e895, #1373ed) 1;
+}
+
+.popup-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  border-bottom: 3px solid;
+  border-color: #1371ed93;
+}
+
+.popup-card p {
+  padding: 2px;
+}
+
+.popup-btn {
+  margin: 20px 25px 0; 
+  background-color: #272727c8;
+  /* color: white; */
+  border: none;
+  padding: 8px 14px;
+  font-size: 13px;
+  border-radius: 4px;
+  cursor: pointer;
+}
 
 /* _________________________paginas________________ */
 .pagination-container {

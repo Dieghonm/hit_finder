@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Papa from 'papaparse';
-import cantor from '../../assets/cantor.png';
-import musica from '../../assets/musica.png';
+import cantorIcon from '../../assets/cantor.png';
+import musicaIcon from '../../assets/musica.png';
 import Nevada from '../../karaoke_lists/Bar Nevada.csv';
 import syncro from '../../karaoke_lists/syncro_2023.csv';
+import useLocalStorage from '../../hooks/useLocalStorage';
+
 import '../../style/MusicList.css';
 
 function MusicList({ escolhido }) {
@@ -14,11 +16,9 @@ function MusicList({ escolhido }) {
   const [filteredData, setFilteredData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage] = useState(20);
-
-  const karaokeMap = {
-    'bar_nevada': { nome: 'Bar Nevada', arquivo: Nevada },
-    'syncro_2023': { nome: 'Syncro 2023', arquivo: syncro },
-  };
+  const [popupData, setPopupData] = useState(null);
+  const [favoritos, adicionarFavorito, removerFavorito] = useLocalStorage('karaokeFavoritos', {});
+  const heart = favoritos[escolhido.id] ||[]
 
   useEffect(() => {
     let karaokeFile = null;
@@ -61,6 +61,29 @@ function MusicList({ escolhido }) {
     setCurrentPage(1);
   };
 
+  const handleClick = (row) => {
+    setPopupData(row);
+  };
+
+  const closePopup = () => {
+    setPopupData(null);
+  };
+
+  const toggleFavorito = (musica, action) => {
+    if (action === 'remove') {
+      removerFavorito({ id: escolhido.id }, { CÓD: musica.CÓD });
+    }else {
+      adicionarFavorito({ id: escolhido.id }, { CÓD: musica.CÓD });
+    }
+  };
+  
+    // Renderização condicional do coração
+  const renderHeart = (codigo) => (
+    <span className="heart-icon">
+      {heart.includes(codigo) ? '❤️' : '♡'}
+    </span>
+  );
+
   const totalPages = Math.ceil(filteredData.length / rowsPerPage);
   const displayedData = filteredData.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
 
@@ -77,23 +100,49 @@ function MusicList({ escolhido }) {
         <tbody>
           {displayedData.map((row, index) => (
             <tr key={index} className="music-row">
-              <td colSpan={3} className="music-card-wrapper">
+              <td colSpan={3} className="music-card-wrapper" onClick={() => handleClick(row)}>
                 <div className="music-card">
-                  <img src={cantor} className="cantor-icon" alt="cantor_icon" />
+                  <img src={cantorIcon} className="cantor-icon" alt="cantor_icon" />
                   <span className="cantor-span">{row["CANTOR"]}</span>
                   |
-                  <img src={musica} className="musica-icon" alt="musica_icon" />
+                  <img src={musicaIcon} className="musica-icon" alt="musica_icon" />
                   <span>{row["TÍTULO"]}</span>
                 </div>
                 <div className="cod-card">
                   <p className="inicio-cell">{row["INÍCIO DA LETRA"]}</p>
-                  <p className="codigo-cell">{row["CÓD"]}</p>
+                  <p className="codigo-cell">{row["CÓD"]}{renderHeart(row.CÓD)}</p>
                 </div>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+
+      {popupData && (
+        <div className="popup-overlay">
+          <div className="popup-card">
+            <div className="popup-header">
+              <p>Musica:&nbsp;</p>
+              <h3>{popupData["TÍTULO"]}&nbsp;{renderHeart(popupData.CÓD)}</h3>
+            </div>
+            <p><strong>Código:</strong> {popupData["CÓD"]}</p>
+            <p><strong>Cantor:</strong> {popupData["CANTOR"]}</p>
+            <p><strong>Início da letra:</strong> {popupData["INÍCIO DA LETRA"]}</p>
+            {heart.includes(popupData["CÓD"]) ?
+              <button className="popup-btn" onClick={() => {
+                toggleFavorito(popupData, 'remove');
+                closePopup();
+              }}>Desfavoritar</button>
+              : 
+              <button className="popup-btn" onClick={() => {
+                toggleFavorito(popupData);
+                closePopup();
+              }}>Favoritar</button>}
+            <button className="popup-btn" onClick={closePopup}>Fechar</button>
+          </div>
+        </div>
+      )}
+
       <div className="pagination-container">
         {currentPage !== 1 && (<button onClick={() => setCurrentPage(1)}>1</button>)}
         {currentPage > 3 && (<button onClick={() => setCurrentPage(currentPage - 2)}>{currentPage - 2}</button>)}
@@ -108,7 +157,3 @@ function MusicList({ escolhido }) {
 }
 
 export default MusicList;
-
-
-
-
