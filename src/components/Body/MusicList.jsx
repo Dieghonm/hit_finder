@@ -107,10 +107,11 @@ function MusicList({ escolhido }) {
                   |
                   <img src={musicaIcon} className="musica-icon" alt="musica_icon" />
                   <span>{row["TÍTULO"]}</span>
+                  
                 </div>
                 <div className="cod-card">
-                  <p className="inicio-cell">{row["INÍCIO DA LETRA"]}</p>
-                  <p className="codigo-cell">{row["CÓD"]}{renderHeart(row.CÓD)}</p>
+                  <p className="inicio-cell">{renderHeart(row.CÓD)}&nbsp;{row["INÍCIO DA LETRA"]}</p>
+                  <p className="codigo-cell">{row["CÓD"]}</p>
                 </div>
               </td>
             </tr>
