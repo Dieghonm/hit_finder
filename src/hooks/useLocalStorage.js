@@ -11,27 +11,28 @@ const useLocalStorage = (key, initialValue) => {
     }
   });
 
-const setValue = (local, musica = { 'CÓD': 0 }) => {
-  if (key === 'karaokeFavoritos') {
-    try {
-      const stored = JSON.parse(window.localStorage.getItem(key)) || {};
-      const localId = local?.id;
-      const musicaCod = musica?.CÓD;
+  const setValue = (local, musica = { 'CÓD': 0 }) => {
+    if (key === 'karaokeFavoritos') {
+      try {
+        const stored = JSON.parse(window.localStorage.getItem(key)) || {};
+        const localId = local?.id;
+        const musicaCod = musica?.CÓD;
 
-      if (!localId || !musicaCod) return;
+        if (!localId || !musicaCod) return;
 
-      const existentes = stored[localId] || [];
-      if (!existentes.includes(musicaCod)) {
-        const atualizados = [...existentes, musicaCod];
-        stored[localId] = atualizados;
-        window.localStorage.setItem(key, JSON.stringify(stored));
-        setStoredValue(stored);
+        const existentes = stored[localId] || [];
+        if (!existentes.includes(musicaCod)) {
+          const atualizados = [...existentes, musicaCod];
+          const novoEstado = { ...stored, [localId]: atualizados };
+          
+          window.localStorage.setItem(key, JSON.stringify(novoEstado));
+          setStoredValue(novoEstado);
+        }
+
+      } catch (error) {
+        console.error(`Erro ao atualizar localStorage (${key}):`, error);
       }
-
-    } catch (error) {
-      console.error(`Erro ao atualizar localStorage (${key}):`, error);
-    }
-  } else {
+    } else {
       try {
         const valueToStore = local instanceof Function ? local(storedValue) : local;
         setStoredValue(valueToStore);
@@ -42,7 +43,7 @@ const setValue = (local, musica = { 'CÓD': 0 }) => {
     }
   };
 
-const removerFavorito = (local, musica = { 'CÓD': 0 }) => {
+  const removerFavorito = (local, musica = { 'CÓD': 0 }) => {
     try {
       if (key === 'karaokeFavoritos') {
         const current = JSON.parse(window.localStorage.getItem(key)) || {};

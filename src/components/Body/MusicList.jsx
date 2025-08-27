@@ -18,7 +18,10 @@ function MusicList({ escolhido }) {
   const [rowsPerPage] = useState(20);
   const [popupData, setPopupData] = useState(null);
   const [favoritos, adicionarFavorito, removerFavorito] = useLocalStorage('karaokeFavoritos', {});
-  const heart = favoritos[escolhido.id] ||[]
+  
+  // Determina o ID do local atual
+  const localAtual = escolhido?.id || id;
+  const heart = favoritos[localAtual] || [];
 
   useEffect(() => {
     let karaokeFile = null;
@@ -28,7 +31,7 @@ function MusicList({ escolhido }) {
       if (escolhido.karaoke === 'syncro_2023.csv') karaokeFile = syncro;
     } else {
       if (id === 'syncro_2023') karaokeFile = syncro;
-      if (id === 'bar_nevada') karaokeFile = Nevada;
+      if (id === 'BarNevada' || id === 'bar_nevada') karaokeFile = Nevada;
     }
 
     if (!karaokeFile) return;
@@ -71,13 +74,13 @@ function MusicList({ escolhido }) {
 
   const toggleFavorito = (musica, action) => {
     if (action === 'remove') {
-      removerFavorito({ id: escolhido.id }, { CÓD: musica.CÓD });
-    }else {
-      adicionarFavorito({ id: escolhido.id }, { CÓD: musica.CÓD });
+      removerFavorito({ id: localAtual }, { CÓD: musica.CÓD });
+    } else {
+      adicionarFavorito({ id: localAtual }, { CÓD: musica.CÓD });
     }
   };
   
-    // Renderização condicional do coração
+  // Renderização condicional do coração
   const renderHeart = (codigo) => (
     <span className="heart-icon">
       {heart.includes(codigo) ? '❤️' : '♡'}
@@ -123,7 +126,7 @@ function MusicList({ escolhido }) {
         <div className="popup-overlay">
           <div className="popup-card">
             <div className="popup-header">
-              <p>Musica:&nbsp;</p>
+              <p>Música:&nbsp;</p>
               <h3>{popupData["TÍTULO"]}&nbsp;{renderHeart(popupData.CÓD)}</h3>
             </div>
             <p><strong>Código:</strong> {popupData["CÓD"]}</p>

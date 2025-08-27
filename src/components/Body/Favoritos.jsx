@@ -6,11 +6,12 @@ import cantorIcon from '../../assets/cantor.png';
 import musicaIcon from '../../assets/musica.png';
 import Nevada from '../../karaoke_lists/Bar Nevada.csv';
 import syncro from '../../karaoke_lists/syncro_2023.csv';
+import baresData from '../../assets/bares.json';
 import '../../style/ListaBares.css';
 import '../../style/MusicList.css';
 
 const Favoritos = () => {
-  const [favoritos,  removerFavorito] = useLocalStorage('karaokeFavoritos', {});
+  const [favoritos, , removerFavorito] = useLocalStorage('karaokeFavoritos', {});
   const [localSelecionado, setLocalSelecionado] = useState('');
   const [csvData, setCsvData] = useState([]);
   const [popupData, setPopupData] = useState(null);
@@ -18,6 +19,7 @@ const Favoritos = () => {
   const [filteredData, setFilteredData] = useState([]);
   
   const baresDisponiveis = Object.keys(favoritos).filter(bar => favoritos[bar].length > 0);
+  const navigate = useNavigate();
 
   // Carrega os dados do CSV e filtra os favoritos
   useEffect(() => {
@@ -25,7 +27,7 @@ const Favoritos = () => {
 
     let karaokeFile = null;
     if (localSelecionado === 'syncro_2023') karaokeFile = syncro;
-    if (localSelecionado === 'bar_nevada') karaokeFile = Nevada;
+    if (localSelecionado === 'BarNevada' || localSelecionado === 'bar_nevada') karaokeFile = Nevada;
 
     if (!karaokeFile) return;
 
@@ -50,8 +52,6 @@ const Favoritos = () => {
       .catch((err) => console.error('Erro ao carregar CSV:', err));
   }, [localSelecionado, favoritos]);
 
-  const navigate = useNavigate(); 
-
   // Filtra os dados conforme o termo de busca
   useEffect(() => {
     const filtered = csvData.filter((row) => 
@@ -70,6 +70,12 @@ const Favoritos = () => {
     <span className="heart-icon">❤️</span>
   );
 
+  // Função para obter nome amigável do estabelecimento
+  const getNomeEstabelecimento = (barId) => {
+    const bar = baresData.find(b => b.id === barId);
+    return bar ? bar.nome : barId;
+  };
+
   if (!localSelecionado) {
     return (
       <div className="lista-bares">
@@ -81,7 +87,7 @@ const Favoritos = () => {
               onClick={() => setLocalSelecionado(bar)}
             >
               <div className="bar-container">
-                <h3>{bar}</h3>
+                <h3>{getNomeEstabelecimento(bar)}</h3>
                 <p>{favoritos[bar].length} música(s) favoritada(s)</p>
               </div>
             </div>
@@ -94,7 +100,7 @@ const Favoritos = () => {
 
   return (
     <div className="app-container">
-      <h2 className="favoritos-title">Favoritos - {localSelecionado}</h2>
+      <h2 className="favoritos-title">Favoritos - {getNomeEstabelecimento(localSelecionado)}</h2>
       <input
         type="text"
         value={searchTerm}
@@ -124,14 +130,19 @@ const Favoritos = () => {
         </tbody>
       </table>
       <div className="table-footer">
-
-      <button
-        className="bar-link"
-        onClick={() => navigate(`/musicas/${localSelecionado}`)}
-      >
-        Voltar para lista
-      </button>
-    </div>
+        <button
+          className="bar-link"
+          onClick={() => setLocalSelecionado('')}
+        >
+          Voltar
+        </button>
+        <button
+          className="bar-link"
+          onClick={() => navigate(`/musicas/${localSelecionado}`)}
+        >
+          Ver lista completa
+        </button>
+      </div>
 
       {popupData && (
         <div className="popup-overlay" onClick={() => setPopupData(null)}>
@@ -163,7 +174,10 @@ const Favoritos = () => {
           </div>
         </div>
       )}
-      {filteredData.length === 0 && (
+      {filteredData.length === 0 && csvData.length === 0 && (
+        <p className="empty-message">Nenhum favorito encontrado para este estabelecimento</p>
+      )}
+      {filteredData.length === 0 && csvData.length > 0 && (
         <p className="empty-message">Nenhum favorito encontrado para esta busca</p>
       )}
     </div>
@@ -171,5 +185,3 @@ const Favoritos = () => {
 };
 
 export default Favoritos;
-
-
