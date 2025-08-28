@@ -1,15 +1,17 @@
 {
   "files": {
-    "main.css": "/hit_finder/static/css/main.a469b4d4.css",
-    "main.js": "/hit_finder/static/js/main.f149d7a2.js",
+    "main.css": "/hit_finder/static/css/main.b548d75f.css",
+    "main.js": "/hit_finder/static/js/main.dcd7916f.js",
     "static/js/488.3cd2673e.chunk.js": "/hit_finder/static/js/488.3cd2673e.chunk.js",
+    "static/media/Bar Nevada.csv": "/hit_finder/static/media/Bar Nevada.de474a6abadd41d3ad4a.csv",
+    "static/media/syncro_2023.csv": "/hit_finder/static/media/syncro_2023.980a55348938f115b37c.csv",
     "index.html": "/hit_finder/index.html",
-    "main.a469b4d4.css.map": "/hit_finder/static/css/main.a469b4d4.css.map",
-    "main.f149d7a2.js.map": "/hit_finder/static/js/main.f149d7a2.js.map",
+    "main.b548d75f.css.map": "/hit_finder/static/css/main.b548d75f.css.map",
+    "main.dcd7916f.js.map": "/hit_finder/static/js/main.dcd7916f.js.map",
     "488.3cd2673e.chunk.js.map": "/hit_finder/static/js/488.3cd2673e.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.a469b4d4.css",
-    "static/js/main.f149d7a2.js"
+    "static/css/main.b548d75f.css",
+    "static/js/main.dcd7916f.js"
   ]
 }
